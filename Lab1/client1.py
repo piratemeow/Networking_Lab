@@ -4,7 +4,7 @@ HEADER = 64
 PORT = 2005
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-SERVER = "10.33.2.88"
+SERVER = "localhost"
 ADDR = (SERVER, PORT)
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,7 +15,7 @@ def receive_msg():
     if msg_length:
         msg_length = int(msg_length)
         msg = client.recv(msg_length).decode(FORMAT)
-        print(msg)
+        print(f'Received from Server: {msg}')
         
         
 def send(msg):
@@ -28,14 +28,17 @@ def send(msg):
     receive_msg()
     
 
-
+print("Connected to the server")
 while True:
-    print("What you want to do?\n1 for making lowercase, \n2 for making making uppercase.\n3 for palindrome\n4 for checking prime.\n5 for closeing")
+    print("What you want to do? Please enter\n1 for making uppercase, \n2 for making making lowecase.\n3 for palindrome.\n4 for checking prime.\n5 for closeing.")
     s = input()
     if s == '5':
         send(DISCONNECT_MESSAGE)
         break
-    s+=input()
+    elif s=='1' or s == '2':
+        s+=input("give a sentence or word: ")
+    elif s == '3' or s =='4':
+        s+=input("give a number: ")
     send(s)
     
     

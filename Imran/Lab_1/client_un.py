@@ -10,7 +10,7 @@ FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 SERVER = "localhost"
 ADDR = (SERVER, PORT)
-LOGIN = True
+LOGIN = False
 count = 0
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
@@ -30,8 +30,8 @@ def receive_msg():
     if msg_length:
         msg_length = int(msg_length)
         msg = client.recv(msg_length).decode(FORMAT)
-        if random_error(99) and msg!="Roll back Successfull":
-            msg = "ERROR"
+        # if random_error(99) and msg!="Roll back Successfull":
+        #     msg = "ERROR"
         if(str(msg)=="True"):
             LOGIN=True
             print("Login successful")
@@ -41,9 +41,8 @@ def receive_msg():
             if msg == 'ERROR':
                 count-=1
                 print(msg)
-                send("ROLLBACK")
             else:
-                print(msg)
+                print(f'Received from Server: {msg}')
         
             
             
@@ -74,21 +73,24 @@ while LOGIN==False:
 
 start_time = time.time()
 while LOGIN==True:
-    #print("You can do the following tasks:")
-    #print("1 for checking balance, \n2 for depositning, \n3 for withdrals\n4 fro exit")
+    print("You can do the following tasks:")
+    print("1 for checking balance, \n2 for depositning, \n3 for withdrals\n4 fro exit")
     # Generate a random integer between 1 and 10 (inclusive)
     count+=1
         
     s = random.randint(2, 3)
     print(s)
+    # s=input();
 
-    if s == 1:
+    if s == '1':
         send('1')
     elif s == 2:
         amount=random.randint(1000,50000)
+        # amount=input("please enter creditable amount")
         send(str(2)+" "+str(amount))
     elif s == 3:
         amount=random.randint(1000,50000)
+        # amount = input("please enter creditable amount")
         send(str(3)+" "+str(amount))
     elif s == 4:
         send(DISCONNECT_MESSAGE)
@@ -98,6 +100,6 @@ while LOGIN==True:
         client.close()
         break
 end_time = time.time()
-print(count)
+# print(count)
 
 print(end_time-start_time)

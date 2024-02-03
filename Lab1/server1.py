@@ -3,7 +3,7 @@ import threading
 
 HEADER = 64
 PORT = 2005
-SERVER = '10.33.2.88'
+SERVER = 'localhost'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
@@ -62,23 +62,36 @@ def handle_client(conn, addr):
             msg_length = int(msg_length)
             msg = conn.recv(msg_length).decode(FORMAT)
             if msg[0]=='1':
-                print(message_capitalize(msg))
-                send(message_capitalize(msg[1:]),conn)
+                print(f'Capitalize {msg[1:]}')
+                print(message_capitalize(msg[1:]))
+                send(f'Capitalized message: {message_capitalize(msg[1:])}',conn)
             elif msg[0]=='2':
+                print(f'Smallarize {msg[1:]}')
                 print(message_smallarize(msg))
-                send(message_smallarize(msg[1:]),conn)
+                send(f'Smallaraized message: {message_smallarize(msg[1:])}',conn)
             elif msg[0]=='3':
+                print(f'Check palindrome {msg[1:]}')
                 print(isPalindrome(msg[1:]))
-                send(str(isPalindrome(msg[1:])),conn)
+
+                if isPalindrome(msg[1:]):
+                    send(f'{msg[1:]} is a palindrome', conn)
+                else:
+                    send(f'{msg[1:]} is not a palindrome', conn)
+
             elif msg[0]=='4':
-                
-                send(str(isPrime(msg[1:])),conn)
+                print(f'Check prime {msg[1:]}')
+                if isPrime(msg[1:]):
+                    send(f'{msg[1:]} is a prime', conn)
+                else:
+                    send(f'{msg[1:]} is not a prime', conn)
             
                 
             
             if msg == DISCONNECT_MESSAGE:
                 connected = False
-            print(f"[{addr}] {msg}")
+                send("SERVER is disconnected",conn)
+                print(f"[{addr}] {msg}")
+
 
     conn.close()
 

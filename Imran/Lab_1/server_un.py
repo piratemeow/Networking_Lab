@@ -25,7 +25,7 @@ def login(id,passkey):
         return False
     
 def checkBalance():
-    return str(balance)
+    return f'your current balance is {balance}'
 
 def credit(message):
     global balance
@@ -39,7 +39,7 @@ def debit (message):
     global balance
     message = int(message)
     if message>balance:
-        return ("Insuficient balance")
+        return ("Insuficient balance. Try again...")
     balance-=message
     return f"Debited successfullt total balance {balance}"
     
@@ -73,31 +73,30 @@ def handle_client(conn, addr):
 
             msg_length = int(msg_length)
             msg = conn.recv(msg_length).decode(FORMAT)
-            if msg=='ROLLBACK':
-                if for_rollback==2:
-                    debit(amount_rollback)
-                    send("Roll back Successfull",conn)
-                elif for_rollback==3:
-                    credit(amount_rollback)
-                    send("Roll back Successfull",conn)
-            
+            if(random_error(1)):
+                send("Error",conn)
+                continue
             elif (msg[0]=='u'):
                 id = msg.split(" ")[0][1:]
                 passkey = msg.split(" ")[1][1:]
                 print(id,passkey)
+                print("Check loging credentials")
                 if (login(id,passkey)):
                     print("Login Successful")
                     send("True",conn)
                 else:
-                    print("Wrong Id or Passkwy")
+                    print("Wrong Id or Passkey")
                     send("False",conn)
             elif msg[0]=='1':
+                print("Check current Balance")
                 send(checkBalance(),conn)
             elif msg[0]=='2':
+                print(f'Credit {msg[1:]} to the account')
                 for_rollback = 2
                 amount_rollback = msg[1:]
                 send(credit(msg[1:]),conn)
             elif msg[0]=='3':
+                print(f'Debit {msg[1:]} from the account')
                 for_rollback = 3
                 amount_rollback = msg[1:]
                 send(debit(msg[1:]),conn)
@@ -105,7 +104,9 @@ def handle_client(conn, addr):
              
             if msg == DISCONNECT_MESSAGE:
                 connected = False
-            print(f"[{addr}] {msg}")
+                print(f"[{addr}] {msg}")
+                send("Server Disconnected!!", conn)
+
 
     conn.close()
 
