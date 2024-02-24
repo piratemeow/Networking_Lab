@@ -1,6 +1,6 @@
 import socket
 import threading
-host = '10.33.2.90'
+host = 'localhost'
 
 port = 2403
 
@@ -28,6 +28,7 @@ def handle_client(data,addr):
     if(dic[data]!= None):
         msg = f'{data} {dic[data][0]} {dic[data][1]} {dic[data][2]}'
         s.sendto(bytes(msg,'utf-8'),addr)
+        print(msg)
         
     else:
         print("No value found")

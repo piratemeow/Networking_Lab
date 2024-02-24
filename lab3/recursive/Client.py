@@ -27,20 +27,6 @@ while True:
             ms = msg.decode('utf-8')
             print('After Decoding: ', ms)
             ms = ms.split()
-
-            while ms[2] != 'A':
-                new_adr = ('localhost', int(ms[1]))
-                print('Connecting to port', ms[1])
-                print(f'{ms[0]} ')
-                client.connect(new_adr)
-                client.sendto(ms[0].encode(FORMAT), new_adr)
-                msg, adr = client.recvfrom(SIZE)
-                print(msg)
-                msg1 = msg.decode(FORMAT)
-                print('Received response from server: ', msg1)
-                ms = msg1.split()
-
-                print('Final message: ', ms[1])
-
+            print("final message: ", ms[2])
         except Exception as e:
             print('An error occurred:', e)

@@ -1,6 +1,6 @@
 import socket
 import threading
-host = '10.33.2.90'
+host = 'localhost'
 
 port = 4488
 
