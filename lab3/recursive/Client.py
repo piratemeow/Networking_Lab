@@ -26,7 +26,11 @@ while True:
 
             ms = msg.decode('utf-8')
             print('After Decoding: ', ms)
-            ms = ms.split()
-            print("final message: ", ms[2])
+            if(ms == 'Not Found'):
+                print(ms)
+                exit()
+            else:
+                ms = ms.split()
+                print("final message: ", ms[2])
         except Exception as e:
             print('An error occurred:', e)

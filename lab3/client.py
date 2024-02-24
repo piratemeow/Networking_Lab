@@ -27,8 +27,11 @@ while True:
             ms = msg.decode('utf-8')
             print('After Decoding: ', ms)
             ms = ms.split()
-
+            print(ms)
             while ms[2] != 'A':
+                if ms[2] == 'found':
+                    print("Value not found..")
+                    break
                 new_adr = ('localhost', int(ms[1]))
                 print('Connecting to port', ms[1])
                 print(f'{ms[0]} ')

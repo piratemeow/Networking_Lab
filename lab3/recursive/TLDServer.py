@@ -27,7 +27,7 @@ def handle_client(data, addr):
     # file1 = open("servers.txt","r")
 
     print(f"[RECEIVED MESSAGE] {data} from {addr}.")
-    if (dic[data] != None):
+    if data in dic:
         try:
             if dic[data][1] == 'A' or dic[data][1] == 'AAAA':
                 msg = f'{data} {dic[data][0]} {dic[data][1]} {dic[data][2]}'

@@ -25,7 +25,7 @@ def handle_client(data,addr):
 
     # file1 = open("servers.txt","r")
 
-    if(dic[data]!= None):
+    if data in dic:
         msg = f'{data} {dic[data][0]} {dic[data][1]} {dic[data][2]}'
         
         s.sendto(bytes(msg,'utf-8'),addr)
