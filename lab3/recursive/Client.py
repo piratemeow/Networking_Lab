@@ -1,5 +1,4 @@
 import socket
-import struct
 
 ADDR = ('localhost', 2403)
 SIZE = 1024
@@ -26,7 +25,7 @@ while True:
 
             ms = msg.decode('utf-8')
             print('After Decoding: ', ms)
-            if(ms == 'Not Found'):
+            if ms == 'Not Found':
                 print(ms)
                 exit()
             else:
