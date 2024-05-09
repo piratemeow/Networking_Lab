@@ -25,8 +25,8 @@ def make_packet(seq, ack, window, checksum):
     packet = network_header + transport_header
     return packet
 
-def check_if_less_than():
-    return random.randint(1,10) < 3
+def check_if_error():
+    return random.randint(2,10) < 3
 
 rcvtim = 1
 mss = 1460
@@ -57,9 +57,9 @@ try:
 
                 try:
                     packet = client_socket.recv(1500)
-                    if check_if_less_than():
+                    if check_if_error():
                         print("generated man made error hehe")
-                        continue
+                        break
 
                 except socket.timeout:
                     print('No data received within 5 seconds')
@@ -83,6 +83,9 @@ try:
                 print(sequence_number, ack, max_rcv, checksum)
 
             if curr_rcv != 0:
+                if b'FileSent' in data_buffer:
+                    file.write(data_buffer)
+                    break
                 rwnd = int((max_buffer_size - len(data_buffer)) / mss)
                 checksum = 45
                 packet = make_packet(total_received, sequence_number + payload_size, rwnd, checksum)
@@ -99,15 +102,13 @@ try:
                 print('ack send')
                 # acknowledgment = f'seq={ack}ack={sequence_number+payload_size}'.encode('utf-8')
                 client_socket.send(packet)
-
-                break
         if data_buffer:
             file.write(data_buffer)
         client_socket.close()
         print('Done')
         print(time.time() - tot_time)
-except:
+except Exception as e:
+    print(e)
     client_socket.close()
     print('Done')
     print(time.time() - tot_time)
-                      

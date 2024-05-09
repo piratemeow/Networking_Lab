@@ -152,7 +152,7 @@ while True:
     else:
         print('Did not receive acknowledgment')
     if not payload:
-        break
+        client_socket.send(b'FileSent')
 
 # Close file
 file.close()
